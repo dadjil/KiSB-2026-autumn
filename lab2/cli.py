@@ -27,9 +27,12 @@ def main():
     encoded = code.encode(bits)
     print(f"Encoded: {''.join(map(str, encoded))}")
     
-    num_errors = random.randint(1, 2)
-    corrupted, error_pos = code.add_errors(encoded, num_errors)
-    print(f"Corrupt ({num_errors}): {''.join(map(str, corrupted))} at {error_pos}")
+    corrupted = encoded[:]
+    num_errors = 1
+    positions = random.sample(range(code.k), num_errors)
+    for p in positions:
+        corrupted[p] ^= 1
+    print(f"Corrupt ({num_errors}): {''.join(map(str, corrupted))} at {positions}")
     
     corrected, found = code.decode(corrupted)
     print(f"Corrected: {''.join(map(str, corrected))}")
